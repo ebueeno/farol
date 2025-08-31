@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Farol Realtime</title>
+    <link rel="stylesheet" href="/static/webrtc.css" />
+  </head>
+  <body>
+    <div class="container" role="region" aria-label="Farol Realtime">
+      <h1 class="title">🎙️ Farol — Voz em tempo real</h1>
+      <p class="subtitle">Sem botões. Ao abrir, pedimos o microfone e escutamos continuamente. As respostas faladas tocam assim que chegam.</p>
+      <div class="badges">
+        <span class="badge">WebRTC</span>
+        <span class="badge">VAD do servidor</span>
+        <span class="badge">Acessível</span>
+      </div>
+      <div id="status" class="status" aria-live="polite">Aguardando permissão do microfone…</div>
+      <audio id="remoteAudio" autoplay playsinline></audio>
+      <pre id="transcripts" class="transcripts" aria-live="polite"></pre>
+    </div>
+
+    <script>
+      window.FAROL_MODEL = {{ model | tojson }};
+      window.FAROL_VOICE = {{ voice | tojson }};
+      window.FAROL_SILENCE_MS = {{ silence_ms | tojson }};
+      window.FAROL_CLIENT_ID = {{ client_id | tojson }};
+    </script>
+    <script src="/static/webrtc.js"></script>
+  </body>
+  </html>
