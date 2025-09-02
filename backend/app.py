@@ -67,6 +67,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+from routers.descrever_site import router as descrever_site_router
+from routers.screenshot import router as screenshot_router
+from routers.fala import router as fala_router
+
+app.include_router(descrever_site_router)
+app.include_router(screenshot_router)
+app.include_router(fala_router)
+
+
+
+
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
