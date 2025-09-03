@@ -83,7 +83,7 @@ def inject_theme_css(zoom: float, mode: str, high_contrast: bool, reduce_motion:
       .card>.content{{ padding:var(--padding-card); overflow-wrap:anywhere; word-break:normal; }}
       .card>.content>*:last-child{{ margin-bottom:0; }}
       .page-title{{ font-size:2.2rem; font-weight:900; margin:0 0 14px 0; }}
-
+      
       /* ===== Grids ===== */
       .grid-2{{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--gap); }}
       .grid-3{{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--gap); }}
@@ -147,10 +147,14 @@ def kpi_chip(label, value, hint=None, percent=None):
     </div>
     """, unsafe_allow_html=True)
 
-def job_card(i: int):
-    body = """
-    <p><b>Empresa X</b> · Remoto · <b>Pleno</b></p>
-    <p>Requisitos: WAI-ARIA, acessibilidade web, testes automatizados.</p>
+def job_card(i: int, match: int | None = None, selo: bool = False):
+    desc = "Requisitos: WAI-ARIA, acessibilidade web, testes automatizados."
+    selo_html = '<span style="background:#052; padding:.15rem .4rem; border-radius:.4rem; margin-left:.4rem;">Selo Empresa Inclusiva</span>' if selo else ""
+    match_html = f'<div style="margin-top:.4rem"><b>Compatibilidade (IA):</b> {match}% — <span style="color:var(--muted)">explicação breve do match</span></div>' if match is not None else ""
+    body = f"""
+    <p><b>Empresa X</b> · Remoto · <b>Pleno</b>{selo_html}</p>
+    <p>{desc}</p>
+    {match_html}
     """
     card(f"Vaga #{i} — Desenvolvedor(a) Acessibilidade", body,
          '<a href="#" aria-label="Candidatar-se" class="btn">Candidatar-se</a>',
@@ -158,23 +162,61 @@ def job_card(i: int):
 
 # ================== PÁGINAS ==================
 PAGES = [
-    ("Home", "🏠"), ("Boas-vindas", "👋"), ("Cadastro por Voz", "📝"),
-    ("Vagas", "💼"), ("Hub de Desenvolvimento", "🧩"),
-    ("Entrevista (Realtime)", "🎙️"), ("Simulação em Andamento", "🟢"),
+    ("Boas-vindas", "👋"), 
+    ("Home", "🏠"),                      # NÃO alterar
+    ("Cadastro por Voz", "📝"),          # Módulo 1
+    ("Vagas", "💼"),                    # Módulo 2
+    ("Hub de Desenvolvimento", "🧩"),    # Módulo 3
+    ("Portfólio de Acessibilidade", "🧰"),# Módulo 5 (parte 1)
+    ("Comunidade", "👥"),                # Módulo 5 (parte 2)
+    ("Biblioteca", "📚"),                # Módulo 5 (parte 3)
+    ("Entrevista (Realtime)", "🎙️"),    # NÃO alterar
+    ("Simulação em Andamento", "🟢"),
     ("Feedback", "📊"),
 ]
 
+# --------- Boas-vindas (com saudação + visão geral) ----------
 def page_boas_vindas():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Bem-vindo ao Farol</h1>', unsafe_allow_html=True)
+    card("Saudação e Conceito Central",
+         """
+         <p><b>Farol</b> é uma plataforma de empregabilidade <b>100% acessível e navegável por voz</b> que usa <b>IA</b>
+         para criar seu perfil, analisar seu currículo, encontrar vagas compatíveis, preparar entrevistas e apoiar seu desenvolvimento contínuo —
+         com foco em profissionais com deficiência visual.</p>
+         """)
+    card("Como funciona",
+         """
+         <ul>
+           <li><b>Navegação por voz</b> com comandos naturais.</li>
+           <li><b>IA em todo o fluxo</b>: currículo, match, recomendações e feedbacks.</li>
+           <li><b>Design sólido</b>: foco visível, contrastes e compatibilidade com leitores de tela.</li>
+         </ul>
+         """)
     st.markdown('<div class="grid-3">', unsafe_allow_html=True)
-    card("Cadastro guiado", "Preencha seu perfil <b>falando</b>.")
-    card("Assistente de carreira", "Recomenda <b>vagas</b> e <b>cursos</b>.")
-    card("Simulador de entrevista", "Converse em <b>tempo real</b> e receba <b>feedback</b>.")
+    card("Módulo 1 — Onboarding e Perfil",
+         "<p>Cadastro guiado por voz, importação de currículo com IA e mapeamento de habilidades.</p>")
+    card("Módulo 2 — Vagas & Match",
+         "<p>Busca por voz, filtros inteligentes, índice de compatibilidade e Selo Empresa Inclusiva.</p>")
+    card("Módulo 3 — Desenvolvimento",
+         "<p>Gaps de competências, recomendações de cursos e mentoria conectada.</p>")
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="grid-3">', unsafe_allow_html=True)
+    card("Módulo 4 — Simulador de Entrevistas (IA)",
+         "<p>Simulações 100% por voz e relatório final em texto e áudio com pontos fortes e melhorias.</p>")
+    card("Módulo 5 — Apoio & Comunidade",
+         "<p>Portfólio de acessibilidade, comunidade acessível por voz e biblioteca de direitos.</p>")
+    card("Nó Central",
+         "<p><b>Empregabilidade acessível por voz com IA</b> — do currículo à contratação.</p>"
+         '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:.35rem">'
+         '<a class="btn primary" href="#Cadastro-por-Voz">📝 Começar cadastro</a>'
+         '<a class="btn" href="#Vagas">💼 Ver vagas</a>'
+         '<a class="btn" href="#Hub-de-Desenvolvimento">🧩 Abrir hub</a>'
+         '</div>')
     st.markdown('</div></div>', unsafe_allow_html=True)
 
+# --------- Home (mantida) ----------
 def page_home():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Seu painel</h1>', unsafe_allow_html=True)
-
 
     st.markdown('<div class="grid-4">', unsafe_allow_html=True)
     kpi_chip("Progresso no Hub", "42%", "Módulos finalizados", percent=42)
@@ -194,8 +236,19 @@ def page_home():
              aria_label="Lembretes")
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --------- Cadastro por Voz (Módulo 1) ----------
 def page_cadastro():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Cadastro guiado por voz</h1>', unsafe_allow_html=True)
+
+    card("Assistente de Boas-Vindas (voz)",
+         "<p>Durante o cadastro, o Farol guia você por voz e confirma cada etapa.</p>")
+
+    # Importação de currículo
+    with st.expander("Importação Inteligente de Currículo (PDF/Word)"):
+        st.file_uploader("Envie seu currículo", type=["pdf","doc","docx"])
+        st.caption("A IA extrai dados e preenche seu perfil. Você confirma tudo por voz.")
+
+    # Formulário rápido (conversacional simplificado)
     with st.form("cadastro_voz"):
         st.text_input("Seu nome", key="cad_nome")
         st.text_input("Objetivo/cargo desejado", placeholder="Ex.: Desenvolvedor(a) Front-end Acessível", key="cad_cargo")
@@ -204,10 +257,20 @@ def page_cadastro():
         st.text_area("Resumo da experiência", height=160, key="cad_exp")
         if st.form_submit_button("Salvar e continuar"):
             st.success("Cadastro salvo!")
-    st.markdown('</div>', unsafe_allow_html=True)
 
+    st.markdown('<div class="grid-2">', unsafe_allow_html=True)
+    card("Análise e Melhoria de Currículo (IA)",
+         "<p>A IA identifica clareza, estrutura e resultados; sugere melhorias e gera relatório em áudio.</p>")
+    card("Mapeamento de Habilidades e Interesses",
+         "<p>Identificação de soft/hard skills + questionário adaptativo por voz para entender preferências.</p>")
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
+# --------- Vagas & Match (Módulo 2) ----------
 def page_vagas():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Busca de Vagas</h1>', unsafe_allow_html=True)
+    card("Busca 100% por voz",
+         '<p>Diga: <i>“Farol, buscar vagas de analista de marketing remoto em São Paulo.”</i></p>'
+         "<p>Use os filtros abaixo para refinar resultados.</p>")
     colf = st.columns(4)
     with colf[0]: st.selectbox("Área", ["Desenvolvimento","QA","Design","Dados"])
     with colf[1]: st.selectbox("Nível", ["Júnior","Pleno","Sênior"])
@@ -215,27 +278,30 @@ def page_vagas():
     with colf[3]: st.multiselect("Acessibilidade", ["Leitor de tela","Alto contraste","Navegação por voz"])
     st.write("")
     st.markdown('<div class="grid-2">', unsafe_allow_html=True)
-    for i in range(1,7): job_card(i)
+    for i in range(1,7):
+        job_card(i, match=70+i*3%25+60, selo=(i%2==0))
     st.markdown('</div></div>', unsafe_allow_html=True)
 
+# --------- Desenvolvimento (Módulo 3) ----------
 def page_hub():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Hub de Desenvolvimento</h1>', unsafe_allow_html=True)
     st.caption("Trilhas, cursos e desafios práticos — sólidos, legíveis e com foco visível.")
     st.markdown('<div class="grid-4">', unsafe_allow_html=True)
     items = [
+        ("Gaps de competências", "Identifique habilidades mais demandadas nas suas vagas-alvo."),
+        ("Recomendações de cursos", "Curadoria de conteúdos acessíveis (vídeos, podcasts, microlearning em áudio)."),
+        ("Mentoria conectada", "Conecte-se com mentores do mercado."),
         ("Trilha ARIA Essentials", "Papéis, estados e propriedades."),
         ("Acessibilidade em React", "Foco, rótulos e atalhos."),
         ("Testes automatizados", "axe-core + Playwright."),
-        ("Navegação por voz", "Comandos e SR."),
-        ("Escrita inclusiva", "Legibilidade e tom."),
-        ("WCAG 2.2", "Critérios e checklist."),
         ("Leitor de tela", "NVDA/JAWS — práticas."),
         ("Portfólio acessível", "Componentes e exemplos."),
     ]
     for t,d in items:
-        card(t, d, '<a href="#" class="btn primary" aria-label="Iniciar trilha">Iniciar</a>', aria_label=t)
+        card(t, d, '<a href="#" class="btn primary" aria-label="Iniciar">Iniciar</a>', aria_label=t)
     st.markdown('</div></div>', unsafe_allow_html=True)
 
+# --------- Entrevista (Realtime) (NÃO alterar) ----------
 def page_entrevista():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Simulador de Entrevistas (voz em tempo real)</h1>', unsafe_allow_html=True)
     cc = st.columns([1.5,1])
@@ -253,11 +319,13 @@ def page_entrevista():
              "<ul><li>Permita o microfone quando solicitado.</li><li>Use fones para evitar eco.</li><li>Pressione TAB para navegar pelos controles.</li></ul>")
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --------- Simulação em andamento ----------
 def page_simulacao():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Simulação em andamento</h1>', unsafe_allow_html=True)
     card("Status", "Acompanhe suas falas e as respostas do agente enquanto a entrevista ocorre.")
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --------- Feedback ----------
 def page_feedback():
     st.markdown('<div class="page-container stack"><h1 class="page-title">Feedback da Simulação</h1>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
@@ -266,6 +334,37 @@ def page_feedback():
     with c2:
         card("Oportunidades de melhoria", "<ul><li>Estruturar STAR</li><li>Detalhar métricas de impacto</li><li>Explicar trade-offs</li></ul>")
     st.markdown('</div>', unsafe_allow_html=True)
+
+# --------- Portfólio (Módulo 5) ----------
+def page_portfolio():
+    st.markdown('<div class="page-container stack"><h1 class="page-title">Meu Portfólio de Acessibilidade</h1>', unsafe_allow_html=True)
+    card("Preferências e tecnologias assistivas",
+         "<p>Registre leitores de tela, atalhos, contrastes, fontes e adaptações preferidas.</p>")
+    with st.form("portfolio"):
+        st.multiselect("Tecnologias assistivas que uso", ["NVDA","JAWS","VoiceOver","TalkBack","Teclado apenas","Comandos de voz"])
+        st.text_area("Notas / observações", height=120)
+        st.form_submit_button("Salvar")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# --------- Comunidade (Módulo 5) ----------
+def page_comunidade():
+    st.markdown('<div class="page-container stack"><h1 class="page-title">Comunidade</h1>', unsafe_allow_html=True)
+    card("Fórum acessível por voz (em breve)",
+         "<p>Espaço moderado por IA para perguntas, trocas e networking — 100% acessível.</p>")
+    card("Regras de convivência",
+         "<ul><li>Respeito e inclusão.</li><li>Conteúdo útil e verificável.</li><li>Zero tolerância a discriminação.</li></ul>")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# --------- Biblioteca (Módulo 5) ----------
+def page_biblioteca():
+    st.markdown('<div class="page-container stack"><h1 class="page-title">Biblioteca de Direitos e Legislação</h1>', unsafe_allow_html=True)
+    card("Conteúdos em áudio",
+         "<p>Resumos em áudio e texto sobre leis e direitos trabalhistas voltados à empregabilidade inclusiva.</p>")
+    st.markdown('<div class="grid-3">', unsafe_allow_html=True)
+    card("Lei de Cotas", "<p>Resumo acessível e exemplos práticos de aplicação.</p>")
+    card("Acessibilidade no trabalho", "<p>Direitos a adaptações razoáveis e tecnologias assistivas.</p>")
+    card("Recursos e canais", "<p>Instituições e serviços de apoio ao trabalhador com deficiência.</p>")
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 # ================== SIDEBAR ==================
 def a11y_controls_sidebar():
@@ -292,7 +391,20 @@ def sidebar_nav():
         use_option_menu = True
 
     if use_option_menu:
-        icons = ["house","hand-thumbs-up","pencil-square","briefcase","puzzle","mic","record-circle","bar-chart"]
+        # deve ter o MESMO tamanho de PAGES
+        icons = [
+            "hand-thumbs-up",  # Boas-vindas
+            "house",           # Home
+            "pencil-square",   # Cadastro por Voz
+            "briefcase",       # Vagas
+            "puzzle",          # Hub
+            "tools",           # Portfólio
+            "people",          # Comunidade
+            "book",            # Biblioteca
+            "mic",             # Entrevista
+            "record-circle",   # Simulação
+            "bar-chart"        # Feedback
+        ]
         current = option_menu(
             menu_title=None, options=[n for n,_ in PAGES], icons=icons,
             default_index=[n for n,_ in PAGES].index(st.session_state.page),
@@ -341,6 +453,9 @@ elif page == "Home": page_home()
 elif page == "Cadastro por Voz": page_cadastro()
 elif page == "Vagas": page_vagas()
 elif page == "Hub de Desenvolvimento": page_hub()
+elif page == "Portfólio de Acessibilidade": page_portfolio()
+elif page == "Comunidade": page_comunidade()
+elif page == "Biblioteca": page_biblioteca()
 elif page == "Entrevista (Realtime)": page_entrevista()
 elif page == "Simulação em Andamento": page_simulacao()
 elif page == "Feedback": page_feedback()
