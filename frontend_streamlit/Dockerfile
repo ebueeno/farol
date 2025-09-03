@@ -15,5 +15,4 @@ EXPOSE 8501
 
 ENV BACKEND_PUBLIC_URL=http://backend:8000
 
-CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0", "--browser.gatherUsageStats=false"]
-
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.fileWatcherType=poll", "--server.runOnSave=true", "--browser.gatherUsageStats=false"]

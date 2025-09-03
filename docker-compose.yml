@@ -39,12 +39,22 @@ services:
     ports:
       - "8501:8501"
     environment:
-        BACKEND_PUBLIC_URL: ${BACKEND_PUBLIC_URL:-http://localhost:${BACKEND_HOST_PORT:-8011}}
-        MODEL: ${MODEL:-gpt-realtime-2025-08-28}
+      BACKEND_PUBLIC_URL: ${BACKEND_PUBLIC_URL:-http://backend:8000}
+      MODEL: ${MODEL:-gpt-realtime-2025-08-28}
+      STREAMLIT_SERVER_FILE_WATCHER_TYPE: poll
+      STREAMLIT_SERVER_RUN_ON_SAVE: "true"
+    volumes:
+      - ./frontend_streamlit:/app   # hot-reload do Streamlit
     depends_on:
       backend:
         condition: service_healthy
     restart: unless-stopped
+    command: >
+      streamlit run /app/streamlit_app.py
+      --server.port=8501
+      --server.address=0.0.0.0
+      --server.fileWatcherType=poll
+      --browser.gatherUsageStats=false
 
 networks:
   default:
