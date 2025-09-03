@@ -412,11 +412,11 @@ def sidebar_nav():
             styles={
                 "container": {"padding": "4px 0 4px 0"},
                 "nav-link": {
-                    "font-weight": "800","padding":"10px 12px","border-radius":"10px","margin":"6px 0",
-                    "background-color":"var(--card)","border":"2px solid var(--edge)","color":"var(--txt)",
+                    "border-radius":"10px",    
+
                 },
-                "nav-link-selected": {
-                    "background-color":"var(--panel)","border":"2px solid var(--accent)","color":"var(--txt)",
+                    "nav-link-selected": {
+                        "background-color":"blue","border":"2px solid var(--accent)","color":"var(--txt)",
                 },
                 "icon": {"color":"var(--accent)"},
             },
