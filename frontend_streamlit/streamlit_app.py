@@ -382,7 +382,7 @@ def a11y_controls_sidebar():
         with c3:
             if st.button("A+"): st.session_state.zoom = min(2.0, round(st.session_state.zoom+0.125,3)); st.rerun()
         st.session_state.reduce_motion = st.toggle("Reduzir animações", value=st.session_state.reduce_motion)
-    st.divider()
+    
 
 def sidebar_nav():
     use_option_menu = False
@@ -410,11 +410,8 @@ def sidebar_nav():
             default_index=[n for n,_ in PAGES].index(st.session_state.page),
             orientation="vertical",
             styles={
-                "container": {"padding": "4px 0 4px 0"},
-                "nav-link": {
-                    "border-radius":"10px",    
-
-                },
+                "container": {"padding": "0px 0 0px 0","background-color":"var(--panel)","border-right":"3px solid var(--edge)"},
+                
                     "nav-link-selected": {
                         "background-color":"blue","border":"2px solid var(--accent)","color":"var(--txt)",
                 },
@@ -430,10 +427,8 @@ def sidebar_nav():
                 st.session_state.page = name; st.rerun()
             st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-    if st.button("Ir para Entrevista 🎙️", use_container_width=True):
-        st.session_state.page = "Entrevista (Realtime)"; st.rerun()
-    st.caption("Tudo acessível por teclado (TAB / SHIFT+TAB / ENTER).")
+  
+   
 
 # ================== APP ==================
 st.markdown('<a href="#conteudo-principal" class="skip-link">Pular para conteúdo principal</a>', unsafe_allow_html=True)
